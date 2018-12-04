@@ -4,14 +4,14 @@ from contextlib import closing
 from bs4 import BeautifulSoup
 
 
-def simple_get(url):
+def simple_get(url, cookie):
     """
     Attempts to get the content at 'url' by making an HTTP GET request.
     If the content-type of response is some kind of HTML/XML, return it,
     otherwise return None.
     """
     try:
-        with closing(get(url, stream=True)) as resp:
+        with closing(get(url, cookies=cookie, stream=True)) as resp:
             if is_good_response(resp):
                 return resp.content
             else:
