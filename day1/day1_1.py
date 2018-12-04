@@ -25,12 +25,17 @@ def is_good_response(resp):
     """
     Return True is the response seems to be HTML, False otherwise.
     """
-    print(resp.headers)
     content_type = resp.headers['Content-Type'].lower()
+    print(resp.status_code)
+    print(resp.status_code == 200)
+    print(content_type is not None)
+    print(content_type.find('html') > -1)
+    print(content_type.find('text/plain') > -1)
+
     return (resp.status_code == 200
             and content_type is not None
             and (content_type.find('html') > -1
-                 or content_type.find('text') > -1)
+                 or content_type.find('text/plain') > -1)
             )
 
 
