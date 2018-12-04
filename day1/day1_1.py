@@ -1,47 +1,25 @@
-from requests import get
-from requests.exceptions import RequestException
-from contextlib import closing
 from bs4 import BeautifulSoup
+from day1_1 import simple_get
+from requests import post
 
+# need to forge the log-in safari cookies into this get request, getting bad
+# content.
 
-def simple_get(url, cookie):
-    """
-    Attempts to get the content at 'url' by making an HTTP GET request.
-    If the content-type of response is some kind of HTML/XML, return it,
-    otherwise return None.
-    """
-    try:
-        with closing(get(url, cookies=cookie, stream=True)) as resp:
-            if is_good_response(resp):
-                return resp.content
-            else:
-                return None
-    except RequestException as e:
-        log_error('Error during requests to {0} : {1}'.format(url, str(e)))
-        return None
+# Needed cookie to get 200 response
+cookie = {'session': '53616c7465645f5fa781e68e30ca72571de02155c2b284a09d89968bbb63326bca1d811344eae5316641662f7f3e8230',
+          '_gid': 'GA1.2.1346648579.1543826069',
+          '_ga': 'GA1.2.1381619122.1543685303'}
 
+raw_html = simple_get('https://adventofcode.com/2018/day/1/input', cookie)
+html = BeautifulSoup(raw_html, 'html.parser')
 
-def is_good_response(resp):
-    """
-    Return True is the response seems to be HTML, False otherwise.
-    """
-    content_type = resp.headers['Content-Type'].lower()
-    print(resp.status_code)
-    print(resp.status_code == 200)
-    print(content_type is not None)
-    print(content_type.find('html') > -1)
-    print(content_type.find('text/plain') > -1)
+stripped_html = html.text.split('\n')
+new_html = []
 
-    return (resp.status_code == 200
-            and content_type is not None
-            and (content_type.find('html') > -1
-                 or content_type.find('text/plain') > -1)
-            )
+try:
+    for item in stripped_html:
+        new_html.append(int(item))
+except ValueError:
+    print('valuerror')
 
-
-def log_error(e):
-    """
-    It is always a good idea to log errors.
-    This function just prints them, but you can make it do anything
-    """
-    print(e)
+print(sum(new_html))
