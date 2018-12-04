@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from scrape import simple_get
 from requests import post
-from adventcode_session data import cookie
+from adventcode_sessiondata import cookie
 
 # need to forge the log-in safari cookies into this get request, getting bad
 # content.
