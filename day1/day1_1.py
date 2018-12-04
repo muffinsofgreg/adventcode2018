@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from day1_1 import simple_get
+from scrape import simple_get
 from requests import post
 
 # need to forge the log-in safari cookies into this get request, getting bad
