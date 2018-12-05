@@ -10,7 +10,8 @@ stripped_html = html.text.split('\n')
 new_html = []
 
 # This actually achieves what I wanted buy by error. It strips the asci + from the strings,
-# but leaves the "-" when converting to int. 
+# but leaves the "-" when converting to int.
+
 try:
     for item in stripped_html:
         new_html.append(int(item))
@@ -24,7 +25,9 @@ counter = 0
 def count(num):
     global counter
     i = 0
+
     while i < num:
+
         for item in new_html:
             counter += item
             if counter in dict_count:
@@ -32,9 +35,11 @@ def count(num):
                 break
             else:
                 dict_count[counter] = 1
+
+        if counter in dict_count:
+            break
         i += 1
 
 
-count(15)
+count(500)
 print(counter)
-print(dict_count)
