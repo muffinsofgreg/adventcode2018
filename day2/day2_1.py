@@ -3,43 +3,15 @@ from scrape import simple_get
 from requests import post
 from adventcode_sessiondata import cookie
 
-raw_html = simple_get('https://adventofcode.com/2018/day/1/input', cookie)
+raw_html = simple_get('https://adventofcode.com/2018/day/2/input', cookie)
 html = BeautifulSoup(raw_html, 'html.parser')
 
 stripped_html = html.text.split('\n')
-new_html = []
 
-# This actually achieves what I wanted buy by error. It strips the asci + from the strings,
-# but leaves the "-" when converting to int.
+# pop off the last element, which is an empty string
+stripped_html.pop()
 
-try:
-    for item in stripped_html:
-        new_html.append(int(item))
-except ValueError:
-    print('valuerror')
+dupe_dict = {}
 
-dict_count = {}
-counter = 0
-
-
-def count(num):
-    global counter
-    i = 0
-
-    while i < num:
-
-        for item in new_html:
-            counter += item
-            if counter in dict_count:
-                print("Here!!!!", counter)
-                break
-            else:
-                dict_count[counter] = 1
-
-        if counter in dict_count:
-            break
-        i += 1
-
-
-count(500)
-print(counter)
+for item in stripped_html:
+    pass
