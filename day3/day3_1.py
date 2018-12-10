@@ -4,7 +4,7 @@ from requests import post
 from adventcode_sessiondata import cookie
 import collections
 
-raw_html = simple_get('https://adventofcode.com/2018/day/2/input', cookie)
+raw_html = simple_get('https://adventofcode.com/2018/day/3/input', cookie)
 html = BeautifulSoup(raw_html, 'html.parser')
 
 stripped_html = html.text.split('\n')
