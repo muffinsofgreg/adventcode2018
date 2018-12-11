@@ -1,44 +1,62 @@
-from bs4 import BeautifulSoup
-from scrape import simple_get
-from requests import post
-from adventcode_sessiondata import cookie
-import collections
+# credit to u/TheHungryTurnip
+# 'https://www.reddit.com/r/adventofcode/comments/a3d6wi/day_3_part_1_troubleshooting/'
 
-raw_html = simple_get('https://adventofcode.com/2018/day/2/input', cookie)
+import sys
+sys.path.append('..')
+
+from bs4 import BeautifulSoup  # nopep8
+from scrape import simple_get  # nopep8
+from adventcode_sessiondata import cookie  # nopep8
+import re  # nopep8
+
+
+raw_html = simple_get('https://adventofcode.com/2018/day/3/input', cookie)
 html = BeautifulSoup(raw_html, 'html.parser')
 
-global stripped_html
 stripped_html = html.text.split('\n')
 
 # pop off the last element, which is an empty string
 stripped_html.pop()
 
-# stripped_html = ['abcd', 'abdc', 'bbdc', 'ahct', 'thys', 'usyd']
+sample = ['#1360 @ 167,387: 19x14', '#1361 @ 578,871: 16x14']
 
 
-def find_them():
-    for i in range(len(stripped_html)):
-        for j in range(i + 1, len(stripped_html)):
-            count = 0
+class Claim():
 
-            for k in range(len(stripped_html[1])):
-                if stripped_html[i][k] != stripped_html[j][k]:
-                    count += 1
-                    if count > 1:
-                        break
-                else:
-                    pass
-                if k == 25 and count <= 1:
-                    print(stripped_html[i], stripped_html[j])
-                    return (stripped_html[i], stripped_html[j])
-                else:
-                    pass
+    def __init__(self, x, y, w, h):
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+
+    def __str__(self):
+        return f'({self.x}, {self.y}){self.w}x{self.h}'
 
 
-answer = ""
-for a, b in find_them():
-    if a == b:
-        answer += a
-    else:
-        pass
-print(answer)
+claims = []
+
+for item in stripped_html:
+    d = re.split(' |,|: |x', item)
+    c = Claim(int(d[2]), int(d[3]), int(d[4]), int(d[5]))
+    claims.append(c)
+
+grid = {}
+
+for item in claims:
+    for w in range(item.w):
+        for h in range(item.h):
+            coord = f'{c.x + w}x{c.y + h}'
+            if coord in grid:
+                grid[coord] += 1
+            else:
+                grid[coord] = 1
+
+print(grid)
+
+overlaps = 0
+
+for item in grid:
+    if grid[item] > 0:
+        overlaps += 1
+
+print(f'overlaps: {overlaps}')
