@@ -18,7 +18,8 @@ stripped_html = html.text.split('\n')
 # pop off the last element, which is an empty string
 stripped_html.pop()
 
-sample = ['#1360 @ 167,387: 19x14', '#1361 @ 578,871: 16x14']
+
+# sample = ['#1 @ 483,830: 24x18', '#2 @ 370,498: 21x17', '#3 @ 403,823: 25x21', '#4 @ 619,976: 20x15', '#5 @ 123,385: 15x26', '#6 @ 484,592: 11x19', '#7 @ 394,960: 28x14', '#8 @ 730,592: 26x20', '#9 @ 975,963: 16x26', '#10 @ 452,496: 18x18']
 
 
 class Claim():
@@ -35,6 +36,16 @@ class Claim():
 
 claims = []
 
+# test = sample[0]
+# d = re.split(' |,|: |x', test)
+# c = Claim(int(d[2]), int(d[3]), int(d[4]), int(d[5]))
+# claims.append(c)
+# print(test)
+# print(d)
+# print(c)
+# print(claims)
+
+
 for item in stripped_html:
     d = re.split(' |,|: |x', item)
     c = Claim(int(d[2]), int(d[3]), int(d[4]), int(d[5]))
@@ -43,20 +54,18 @@ for item in stripped_html:
 grid = {}
 
 for item in claims:
-    for w in range(item.w):
-        for h in range(item.h):
+    for h in range(item.h):
+        for w in range(item.w):
             coord = f'{c.x + w}x{c.y + h}'
             if coord in grid:
                 grid[coord] += 1
             else:
                 grid[coord] = 1
 
-print(grid)
-
 overlaps = 0
 
 for item in grid:
-    if grid[item] > 0:
+    if grid[item] > 1:
         overlaps += 1
 
 print(f'overlaps: {overlaps}')
